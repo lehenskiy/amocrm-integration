@@ -1,0 +1,3 @@
+RequisitionController:
+    resource: App\Requisition\RequisitionController
+    type: attribute
