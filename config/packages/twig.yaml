@@ -1,4 +1,7 @@
 twig:
+    paths:
+        '%kernel.project_dir%/src': 'app.src_dir'
+        '%kernel.project_dir%/src/Shared/View': 'app.shared_dir'
     file_name_pattern: '*.twig'
 
 when@test:
