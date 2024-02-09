@@ -32,7 +32,7 @@ services:
       nginx: # for application tests
         condition: service_healthy
     environment:
-      DOMAIN: ${AI_DOMAIN:-AI.localhost}
+      DOMAIN: ${AI_DOMAIN:-ai.localhost}
     tty: true
     working_dir: /var/www
     volumes:
@@ -50,8 +50,8 @@ services:
       fpm:
         condition: service_started
     environment:
-      DOMAIN: ${AI_DOMAIN:-AI.localhost}
-    hostname: ${AI_DOMAIN:-AI.localhost}
+      DOMAIN: ${AI_DOMAIN:-ai.localhost}
+    hostname: ${AI_DOMAIN:-ai.localhost}
     healthcheck:
       test: "curl -f http://$$DOMAIN"
       interval: 10s
