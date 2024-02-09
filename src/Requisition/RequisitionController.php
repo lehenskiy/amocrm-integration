@@ -21,12 +21,8 @@ class RequisitionController extends AbstractController
         $createRequisitionForm = $this->createForm(RequisitionForm::class);
         $createRequisitionForm->handleRequest($request);
         if ($createRequisitionForm->isSubmitted() && $createRequisitionForm->isValid()) {
-            try {
-                $this->addFlash('success', self::REQUISITION_CREATED_MESSAGE);
-                $createRequisitionForm = $this->createForm(RequisitionForm::class); // clear form
-            } catch (\Exception $exception) {
-                $createRequisitionForm->get('title')->addError(new FormError($exception->getMessage()));
-            }
+            $this->addFlash('success', self::REQUISITION_CREATED_MESSAGE);
+            $createRequisitionForm = $this->createForm(RequisitionForm::class); // clear form
         }
 
         return $this->render('@app.src_dir/Requisition/Create/output.twig', [
