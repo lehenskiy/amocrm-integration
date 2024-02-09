@@ -1,0 +1,81 @@
+name: 'amocrm-integration'
+
+services:
+  fpm:
+    build:
+      context: .
+      dockerfile: docker/fpm/Dockerfile
+      args:
+        USER: ${AI_USER:-www-data}
+    container_name: ${COMPOSE_PROJECT_NAME}-fpm
+    environment:
+      DOMAIN: ${AI_DOMAIN:-ai.localhost}
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - vendor:/var/www/vendor
+      - app_var:/var/www/var
+    networks:
+      - backend-network
+
+# one container - one process, all interactions through CLI-container
+  cli:
+    build:
+      context: .
+      dockerfile: docker/cli/Dockerfile
+      args:
+        USER: ${AI_USER:-www-data}
+    container_name: ${COMPOSE_PROJECT_NAME}-cli
+    depends_on:
+      nginx: # for application tests
+        condition: service_healthy
+    environment:
+      DOMAIN: ${AI_DOMAIN:-AI.localhost}
+    tty: true
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./var/coverage:/var/www/var/coverage
+      - vendor:/var/www/vendor # share vendor with fpm
+      - app_var:/var/www/var # share cache and logs with fpm
+    networks:
+      - backend-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: ${COMPOSE_PROJECT_NAME}-nginx
+    depends_on:
+      fpm:
+        condition: service_started
+    environment:
+      DOMAIN: ${AI_DOMAIN:-AI.localhost}
+    hostname: ${AI_DOMAIN:-AI.localhost}
+    healthcheck:
+      test: "curl -f http://$$DOMAIN"
+      interval: 10s
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "${AI_NGINX_PORT:-80}:80"
+    volumes:
+      - ./public:/var/www/public:ro
+    configs:
+      - source: nginx_config
+        target: /etc/nginx/conf.d/default.conf
+    networks:
+      - backend-network
+
+volumes:
+  vendor:
+  app_var:
+
+configs:
+  nginx_config:
+    file: ./docker/nginx/conf.d/default.conf
+
+networks:
+  backend-network:
+    driver: bridge
+    name: ${COMPOSE_PROJECT_NAME}-backend-network
