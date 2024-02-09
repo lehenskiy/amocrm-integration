@@ -1,0 +1,92 @@
+{% extends '@app.shared_dir/base.twig' %}
+{% block content %}
+    <div class="grid m-3 overflow-hidden">
+        <div class="w-full p-6 m-auto bg-transparent/10 rounded-md shadow-md border-2 border-info lg:max-w-md">
+            {{ form_start(form, {'method': 'POST', 'attr': {'class': 'space-y-4 grid'}}) }}
+            {% if form_errors(form) != null %}
+                <div class="grid mt-1">
+                    {% for error in form.vars.errors %}
+                        <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div>
+                {{ form_label(form.name) }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.name, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'placeholder': 'Шитов Алексей',
+                        'autocomplete': 'name',
+                        'required': true,
+                    }}) }}
+                </div>
+                {% if form_errors(form.name) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.name.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.email) }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.email, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'placeholder': 'random@hotmail.com',
+                        'autocomplete': 'email',
+                        'required': true,
+                    }}) }}
+                </div>
+                {% if form_errors(form.email) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.email.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.phoneNumber) }}
+                <div class="date w-[97%]">
+                    {{ form_widget(form.phoneNumber, {'attr': {
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'placeholder': '80123456789',
+                        'autocomplete': 'phone',
+                        'required': true,
+                    }}) }}
+                </div>
+                {% if form_errors(form.phoneNumber) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.phoneNumber.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form_label(form.price) }}
+                <div class="indicator w-[97%]">
+                    {{ form_widget(form.price, {'attr': {
+                        'class': 'form-control ml-3 input-sm border-info rounded-sm border w-full',
+                        'placeholder': '1000.0',
+                        'required': true,
+                    }}) }}
+                </div>
+                {% if form_errors(form.price) != null %}
+                    <div class="grid mt-1">
+                        {% for error in form.price.vars.errors %}
+                            <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                <div class="place-self-center text-center mt-2">
+                    <button class="btn btn-accent rounded-sm" id="create_requisition" type="submit">Save</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
