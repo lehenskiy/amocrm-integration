@@ -14,6 +14,11 @@ class CreateRequisitionService
     private const REQUEST_PROTOCOL = 'https';
     private const REQUEST_HOST = 'amocrm.ru';
     private const REQUEST_PATH = '/api/v4/leads/complex';
+    private const LEADS_FILLED_FOR_LONG_TIME_FIELD_ID = 166345;
+    private const CONTACTS_EMAIL_FIELD_ID = 72785;
+    private const CONTACTS_EMAIL_WORK_CATEGORY_ID = 36733;
+    private const CONTACTS_PHONE_NUMBER_FIELD_ID = 72783;
+    private const CONTACTS_PHONE_NUMBER_WORK_CATEGORY_ID = 36721;
 
     public function __construct(
         private AmoCrmApiClient $amoCRMApiRequestSender,
@@ -54,7 +59,7 @@ class CreateRequisitionService
                     'price' => $requisitionDTO->price,
                     'custom_fields_values' => [
                         [
-                            'field_id' => 166345,
+                            'field_id' => self::LEADS_FILLED_FOR_LONG_TIME_FIELD_ID,
                             'values' => [
                                 [
                                     'value' => $requisitionDTO->filledForLongTime
@@ -68,19 +73,19 @@ class CreateRequisitionService
                                 'name' => $requisitionDTO->name,
                                 'custom_fields_values' => [
                                     [
-                                        'field_id' => 72785,
+                                        'field_id' => self::CONTACTS_EMAIL_FIELD_ID,
                                         'values' => [
                                             [
-                                                'enum_id' => 36733,
+                                                'enum_id' => self::CONTACTS_EMAIL_WORK_CATEGORY_ID,
                                                 'value' => $requisitionDTO->email,
                                             ]
                                         ]
                                     ],
                                     [
-                                        'field_id' => 72783,
+                                        'field_id' => self::CONTACTS_PHONE_NUMBER_FIELD_ID,
                                         'values' => [
                                             [
-                                                'enum_id' => 36721,
+                                                'enum_id' => self::CONTACTS_PHONE_NUMBER_WORK_CATEGORY_ID,
                                                 'value' => $requisitionDTO->phoneNumber,
                                             ]
                                         ]
