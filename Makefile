@@ -1,7 +1,7 @@
 ###< manipulations with docker compose app >###
-init: up compose
+init: up compose migrate
 
-init-from-scratch: remove up-no-cache compose
+init-from-scratch: remove up-no-cache compose migrate
 
 up:
 	docker compose up -d --build
@@ -24,6 +24,10 @@ up-no-cache:
 ###< actions with app >###
 compose:
 	docker compose run --no-deps --rm cli composer install --no-cache --no-progress --no-interaction --no-ansi
+
+migrate:
+	docker compose run --no-deps --rm cli php bin/console doctrine:database:create --if-not-exists --no-interaction --no-ansi
+	docker compose run --no-deps --rm cli php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --all-or-nothing
 
 # test production behavior in dev environment
 compose-no-dev:
