@@ -6,7 +6,7 @@ namespace App\Requisition\Create;
 
 use App\Shared\Exception\AmoCrmAuthorizationException;
 use App\Shared\Exception\AmoCrmSendApiRequestFailedException;
-use App\Shared\Service\AmoCrm\AmoCrmApiRequestSender;
+use App\Shared\Service\AmoCrm\AmoCrmApiClient;
 use Psr\Log\LoggerInterface;
 
 class CreateRequisitionService
@@ -16,7 +16,7 @@ class CreateRequisitionService
     private const REQUEST_PATH = '/api/v4/leads/complex';
 
     public function __construct(
-        private AmoCrmApiRequestSender $amoCRMApiRequestSender,
+        private AmoCrmApiClient $amoCRMApiRequestSender,
         private string $accountName,
         private LoggerInterface $logger,
     ) {
@@ -30,7 +30,7 @@ class CreateRequisitionService
         $jsonBody = json_encode($requestData);
 
         try {
-            $this->amoCRMApiRequestSender->sendAPIRequest(AmoCrmApiRequestSender::POST_REQUEST_METHOD, $url, $jsonBody);
+            $this->amoCRMApiRequestSender->request(AmoCrmApiClient::POST_REQUEST_METHOD, $url, $jsonBody);
         } catch (AmoCrmAuthorizationException|AmoCrmSendApiRequestFailedException $exception) {
             $this->logger->critical($exception->getMessage(), [
                 'trace' => $exception->getTraceAsString(),
