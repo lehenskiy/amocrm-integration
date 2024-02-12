@@ -8,6 +8,9 @@ services:
       args:
         USER: ${AI_USER:-www-data}
     container_name: ${COMPOSE_PROJECT_NAME}-fpm
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
       DOMAIN: ${AI_DOMAIN:-ai.localhost}
     restart: unless-stopped
@@ -28,18 +31,33 @@ services:
       args:
         USER: ${AI_USER:-www-data}
     container_name: ${COMPOSE_PROJECT_NAME}-cli
-    depends_on:
-      nginx: # for application tests
-        condition: service_healthy
     environment:
       DOMAIN: ${AI_DOMAIN:-ai.localhost}
     tty: true
     working_dir: /var/www
     volumes:
       - ./:/var/www
-      - ./var/coverage:/var/www/var/coverage
       - vendor:/var/www/vendor # share vendor with fpm
       - app_var:/var/www/var # share cache and logs with fpm
+    networks:
+      - backend-network
+
+  db:
+    image: postgres:${AI_PGSQL_VERSION:-16}-alpine
+    container_name: ${COMPOSE_PROJECT_NAME}-db
+    environment:
+      POSTGRES_DB: ${AI_PGSQL_DATABASE:-integration}
+      POSTGRES_USER: ${AI_PGSQL_USERNAME:-integration}
+      POSTGRES_PASSWORD: ${AI_PGSQL_PASSWORD:-integration}
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-d $$POSTGRES_DB" ]
+      interval: 10s
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "${AI_PGSQL_PORT:-5432}:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
     networks:
       - backend-network
 
@@ -70,6 +88,7 @@ services:
 volumes:
   vendor:
   app_var:
+  db_data:
 
 configs:
   nginx_config:
