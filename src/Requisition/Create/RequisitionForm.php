@@ -6,7 +6,8 @@ namespace App\Requisition\Create;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,8 +21,9 @@ class RequisitionForm extends AbstractType
             ->add('name', TextType::class)
             ->add('email', EmailType::class)
             ->add('phoneNumber', TelType::class)
-            ->add('price', MoneyType::class, [
-                'currency' => 'RUB', // https://en.wikipedia.org/wiki/ISO_4217
+            ->add('price', IntegerType::class)
+            ->add('filledForLongTime', RadioType::class, [
+                'required' => false,
             ]);
     }
 

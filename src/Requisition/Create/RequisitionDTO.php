@@ -20,7 +20,12 @@ class RequisitionDTO
     #[Assert\Regex(pattern: '/^8[0-9]{10}$/', message: 'Number format: \'8\' + 10 any digits')]
     public string $phoneNumber;
 
-    #[Assert\GreaterThanOrEqual(value: 0.0)]
+    #[Assert\GreaterThanOrEqual(value: 0)]
+    #[Assert\Type(type: 'integer')]
     #[Assert\NotNull]
-    public float $price;
+    public int $price;
+
+    #[Assert\Type(type: 'bool')]
+    #[Assert\NotNull]
+    public bool $filledForLongTime;
 }

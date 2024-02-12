@@ -68,8 +68,9 @@
                 {{ form_label(form.price) }}
                 <div class="indicator w-[97%]">
                     {{ form_widget(form.price, {'attr': {
-                        'class': 'form-control ml-3 input-sm border-info rounded-sm border w-full',
-                        'placeholder': '1000.0',
+                        'class': 'form-control input-sm border-info rounded-sm border w-full',
+                        'placeholder': '1000(RUB)',
+                        'min': 0,
                         'required': true,
                     }}) }}
                 </div>
@@ -81,10 +82,22 @@
                     </div>
                 {% endif %}
             </div>
+            <div hidden="hidden">{{ form_label(form.filledForLongTime) }}</div>
+            {{ form_widget(form.filledForLongTime, {'attr': {
+                'hidden': true,
+            }}) }}
+            {% if form_errors(form.filledForLongTime) != null %}
+                <div class="grid mt-1">
+                    {% for error in form.filledForLongTime.vars.errors %}
+                        <span class="bg-yellow-100 place-self-center text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">{{ error.message }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
             <div>
                 <div class="place-self-center text-center mt-2">
                     <button class="btn btn-accent rounded-sm" id="create_requisition" type="submit">Save</button>
                 </div>
+                <script src="{{ asset('script/FillingRequisitionForLongTime.js') }}"></script>
                 {{ form_end(form) }}
             </div>
         </div>
