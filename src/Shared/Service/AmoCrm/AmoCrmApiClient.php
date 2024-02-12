@@ -13,7 +13,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
 
-class AmoCrmApiRequestSender
+class AmoCrmApiClient
 {
     public const POST_REQUEST_METHOD = 'POST';
     private const REQUEST_ACCEPTED_CONTENT_TYPE = 'application/json';
@@ -29,7 +29,7 @@ class AmoCrmApiRequestSender
      * @throws AmoCrmAuthorizationException
      * @throws AmoCrmSendApiRequestFailedException
      */
-    public function sendApiRequest(string $method, string $url, string $jsonBody): void
+    public function request(string $method, string $url, string $jsonBody): void
     {
         $accessToken = $this->amoCRMAccessTokenManager->getAccessToken();
         $apiResponse = $this->sendAuthorizedRequest($method, $url, $jsonBody, $accessToken);
