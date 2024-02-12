@@ -1,4 +1,11 @@
 # AmoCRM Integration
+## Deployment
+1) `git clone https://github.com/lehenskiy/amocrm-integration`
+2) `cd amocrm-integration`
+3) `make init`
+4) Edit `AMO_` variables in `.env` (or in `.env.local`)
+5) go to `ai.localhost`
+
 ## ТЗ
 Написать отправку заявок с сайта в AmoCRM.
 
